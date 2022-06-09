@@ -3,28 +3,14 @@ import 'package:gesplai/screens/profile/widgets/detail_image.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 
 class ImagesTabBar extends StatefulWidget {
-  const ImagesTabBar({Key? key}) : super(key: key);
+  final List<String> images;
+  const ImagesTabBar({Key? key, required this.images}) : super(key: key);
 
   @override
   State<ImagesTabBar> createState() => _ImagesTabBarState();
 }
 
 class _ImagesTabBarState extends State<ImagesTabBar> {
-  List<String> images = [
-    'assets/images/esplai1.png',
-    'assets/images/esplai2.jpg',
-    'assets/images/esplai3.jpg',
-    'assets/images/esplai4.jpg',
-    'assets/images/esplai5.jpg',
-    'assets/images/esplai6.jpg',
-    'assets/images/esplai1.png',
-    'assets/images/esplai2.jpg',
-    'assets/images/esplai3.jpg',
-    'assets/images/esplai4.jpg',
-    'assets/images/esplai5.jpg',
-    'assets/images/esplai6.jpg',
-  ];
-
   @override
   Widget build(BuildContext context) {
     timeDilation = 1.5;
@@ -36,7 +22,7 @@ class _ImagesTabBarState extends State<ImagesTabBar> {
           mainAxisSpacing: 2.0,
           crossAxisSpacing: 2.0,
         ),
-        itemCount: images.length,
+        itemCount: widget.images.length,
         itemBuilder: (context, index) {
           return InkWell(
               child: Hero(
@@ -44,7 +30,7 @@ class _ImagesTabBarState extends State<ImagesTabBar> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(images[index]),
+                        image: AssetImage(widget.images[index]),
                         fit: BoxFit.fitHeight,
                         alignment: Alignment.center),
                   ),
@@ -53,7 +39,7 @@ class _ImagesTabBarState extends State<ImagesTabBar> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => DetailImage(
-                          url: images[index],
+                          url: widget.images[index],
                           index: index,
                         )));
               });

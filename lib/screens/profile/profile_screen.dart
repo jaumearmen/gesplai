@@ -3,6 +3,7 @@ import 'package:gesplai/screens/profile/images_tab_bar.dart';
 import 'package:gesplai/screens/profile/opinions_tab_bar.dart';
 import 'package:gesplai/screens/profile/widgets/custom_sliver_app_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:gesplai/services/profile_service.dart';
 
 import '../../services/auth_service.dart';
 import 'package:gesplai/globals.dart' as globals;
@@ -16,8 +17,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final profileService = Provider.of<ProfileService>(context);
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -56,10 +63,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ];
             },
-            body: const TabBarView(
+            body: TabBarView(
               children: [
-                ImagesTabBar(),
-                OpinionsTabBar(),
+                ImagesTabBar(
+                  images: profileService.getEsplaiImages(),
+                ),
+                const OpinionsTabBar(),
               ],
             ),
           ),
