@@ -37,7 +37,8 @@ class _BottomNavMenuState extends State<BottomNavMenu> {
         selectedItemColor: globals.COLOR_BLACK,
         unselectedItemColor: globals.COLOR_GREY,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined), label: 'Attendance'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
           BottomNavigationBarItem(icon: Icon(Icons.message), label: 'Chat'),
           BottomNavigationBarItem(
