@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gesplai/screens/funcions_utils.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -137,9 +138,7 @@ class _SignInState extends State<SignIn> {
                     Container(
                       child: const Text("Don't have an account yet?"),
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
+                    addVerticalSpace(15),
                     Container(
                       child: TextButton(
                         onPressed: () {
