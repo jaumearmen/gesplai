@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gesplai/screens/funcions_utils.dart';
 
 class ActivityCard extends StatelessWidget {
   final String title;
@@ -27,9 +28,7 @@ class ActivityCard extends StatelessWidget {
                     Container(
                       child: Text(title, style: const TextStyle(fontSize: 20)),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    addVerticalSpace(10),
                     Container(
                       child: Text(description),
                     ),

@@ -14,7 +14,7 @@ class BottomNavMenu extends StatefulWidget {
 }
 
 class _BottomNavMenuState extends State<BottomNavMenu> {
-  int pageIndex = 0;
+  int pageIndex = 3;
 
   final pages = [
     const AttendanceScreen(),

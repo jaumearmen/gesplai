@@ -1,10 +1,29 @@
 class User {
-  final String uid;
+  final String? name;
+  final String? username;
   final String? email;
+  final String? description;
+  final String? profilePhotoUrl;
+  final int? phoneNumber;
+  final String? idEsplai;
 
-  User(this.uid, this.email);
+  User({
+    this.name,
+    this.username,
+    this.email,
+    this.description,
+    this.profilePhotoUrl,
+    this.phoneNumber,
+    this.idEsplai,
+  });
 
-  String? getEmail() {
-    return email;
-  }
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'username': username,
+        'email': email,
+        'description': description,
+        'profilePhotoUrl': profilePhotoUrl,
+        'idEsplai': idEsplai,
+        'phoneNumber': phoneNumber
+      };
 }

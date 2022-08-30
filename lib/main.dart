@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gesplai/screens/wrapper_login.dart';
+import 'package:gesplai/services/activities_service.dart';
 import 'package:gesplai/services/auth_service.dart';
 import 'package:gesplai/services/profile_service.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         Provider<ProfileService>(
           create: (_) => ProfileService(),
+        ),
+        Provider<ActivitiesService>(
+          create: (_) => ActivitiesService(),
         ),
       ],
       child: MaterialApp(
