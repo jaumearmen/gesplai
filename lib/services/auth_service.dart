@@ -1,19 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:gesplai/models/user.dart';
+import 'package:gesplai/models/user_login.dart';
 
 class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
 
-  User? _userFromFirebase(auth.User? user) {
+  UserLogin? _userFromFirebase(auth.User? user) {
     if (user == null) return null;
-    return User(user.uid, user.email);
+    return UserLogin(user.uid, user.email);
   }
 
-  Stream<User?> get user {
+  Stream<UserLogin?> get user {
     return _firebaseAuth.authStateChanges().map(_userFromFirebase);
   }
 
-  Future<User?> signInWithEmailAndPassword(
+  Future<UserLogin?> signInWithEmailAndPassword(
     String email,
     String password,
   ) async {
@@ -29,7 +29,7 @@ class AuthService {
     return null;
   }
 
-  Future<User?> createUserWithEmailAndPassword(
+  Future<UserLogin?> createUserWithEmailAndPassword(
     String email,
     String password,
   ) async {

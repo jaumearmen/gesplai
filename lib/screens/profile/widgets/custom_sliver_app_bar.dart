@@ -23,10 +23,7 @@ class CustomSliverAppBar extends StatelessWidget {
                       margin: const EdgeInsets.all(10),
                       child: ElevatedButton(
                         onPressed: () {},
-                        child: const Text(
-                          "+",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
+                        child: const Icon(Icons.add),
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
                         ),

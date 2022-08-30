@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/models/activity.dart';
+import 'package:gesplai/screens/act_not/edit_activity_screen.dart';
 import 'package:gesplai/screens/act_not/widgets/activity_card.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
 import 'package:gesplai/services/activities_service.dart';
-
+import 'package:gesplai/globals.dart' as globals;
 import 'package:provider/provider.dart';
 
 class ActNotListScreen extends StatefulWidget {
@@ -20,6 +21,17 @@ class _ActNotListScreenState extends State<ActNotListScreen> {
     List<Activity> activities = activitiesService.getActivities();
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const EditActivitySceren()),
+            );
+          },
+          backgroundColor: globals.COLOR_BLUE,
+          child: const Icon(Icons.add),
+        ),
         body: Container(
           padding: const EdgeInsets.all(10),
           child: ListView.builder(

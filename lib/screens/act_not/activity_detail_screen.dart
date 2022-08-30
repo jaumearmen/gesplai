@@ -69,7 +69,8 @@ class ActivityDetailScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.20,
                 color: globals.COLOR_LIGHT_GREY,
               ),
-        Positioned(
+        Align(
+          alignment: Alignment.bottomCenter,
           child: Container(
             child: const Text(
               'Excursió a la Mola',

@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
 class CalendarCard extends StatelessWidget {
-  const CalendarCard({Key? key}) : super(key: key);
+  final int day;
+  final String title;
+  final bool attendanceMarked;
+  const CalendarCard(
+      {Key? key,
+      required this.day,
+      required this.title,
+      required this.attendanceMarked})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +23,8 @@ class CalendarCard extends StatelessWidget {
               width: 50,
               height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(color: Colors.blue),
-              child: const Center(
-                child: Text('18'),
+              child: Center(
+                child: Text(day.toString()),
               ),
             ),
             Container(
@@ -24,9 +32,9 @@ class CalendarCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Container(
-                      child: const Text(
-                        "Dia d'esplai",
-                        style: TextStyle(fontSize: 25),
+                      child: Text(
+                        title,
+                        style: const TextStyle(fontSize: 25),
                       ),
                     ),
                   ),
@@ -35,9 +43,9 @@ class CalendarCard extends StatelessWidget {
                       width: 5,
                       height: 5,
                       margin: const EdgeInsets.all(10),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.green,
+                        color: attendanceMarked ? Colors.green : Colors.red,
                       ),
                     ),
                   ),
