@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:gesplai/globals.dart' as globals;
 import 'package:gesplai/screens/funcions_utils.dart';
 
-class NotificationDetailScreen extends StatelessWidget {
-  const NotificationDetailScreen(String s, {Key? key}) : super(key: key);
+class EventDetailScreen extends StatelessWidget {
+  final String title;
+  final String description;
+  const EventDetailScreen(
+      {Key? key, required this.title, required this.description})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     bool imageExists = true;
-    String longText =
-        'Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text';
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -23,7 +25,7 @@ class NotificationDetailScreen extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Text(
-                      longText,
+                      description,
                       maxLines: 3,
                       overflow: TextOverflow.fade,
                     ),
@@ -43,7 +45,7 @@ class NotificationDetailScreen extends StatelessWidget {
         imageExists
             ? Container(
                 child: Image.asset(
-                  'name',
+                  'assets/images/esplai2.jpg',
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.35,
                   fit: BoxFit.cover,
@@ -56,9 +58,9 @@ class NotificationDetailScreen extends StatelessWidget {
               ),
         Positioned(
           child: Container(
-            child: const Text(
-              'Notification',
-              style: TextStyle(
+            child: Text(
+              title,
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),

@@ -16,7 +16,12 @@ class IconAndText extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(left: 10),
-          child: Text(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 18,
+            ),
+          ),
         ),
       ],
     );

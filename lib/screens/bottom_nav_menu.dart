@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/screens/act_not/act_not_list_screen.dart';
-import 'package:gesplai/screens/attendance/attendance_screen.dart';
+import 'package:gesplai/screens/attendance/calendar_screen.dart';
 import 'package:gesplai/screens/chat/chat_list_screen.dart';
 import 'package:gesplai/screens/profile/profile_screen.dart';
 import 'package:gesplai/screens/search/search_screen.dart';
@@ -17,7 +17,7 @@ class _BottomNavMenuState extends State<BottomNavMenu> {
   int pageIndex = 3;
 
   final pages = [
-    const AttendanceScreen(),
+    const CalendarScreen(),
     const SearchScreen(),
     const ChatListScreen(),
     const ActNotListScreen(),

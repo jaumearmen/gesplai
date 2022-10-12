@@ -10,7 +10,7 @@ class ActivityDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     bool imageExists = true;
     String longText =
-        'Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text Really Long Text';
+        "Farem un petit recorregut per l'esglesia de Sant Joan de Matadepera i veurem totes les capelles i el santíssim. Al final farem un petit berenar a les afores de la plaça Cal Baldiró i ja haureu fet.";
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -21,17 +21,17 @@ class ActivityDetailScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const IconAndText(
-                    text: 'Carrer Sant Joan',
+                    text: 'Carrer Àngel Guimerà, 8',
                     icon: Icons.location_on,
                   ),
                   addVerticalSpace(10),
                   const IconAndText(
-                    text: '8/10/2022',
+                    text: '18/12/2022',
                     icon: Icons.calendar_today_outlined,
                   ),
                   addVerticalSpace(10),
                   const IconAndText(
-                    text: '8a.m - 3a.m',
+                    text: '18:00 - 20:00',
                     icon: Icons.schedule,
                   ),
                   addVerticalSpace(30),
@@ -39,8 +39,7 @@ class ActivityDetailScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: Text(
                       longText,
-                      maxLines: 3,
-                      overflow: TextOverflow.fade,
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
                 ],
@@ -54,11 +53,12 @@ class ActivityDetailScreen extends StatelessWidget {
 
   Widget ImageStack(bool imageExists, BuildContext context) {
     return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
       children: [
         imageExists
             ? Container(
                 child: Image.asset(
-                  'assets/images/esplai2.jpg',
+                  'assets/images/esplai3.jpg',
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height * 0.35,
                   fit: BoxFit.cover,
@@ -69,15 +69,37 @@ class ActivityDetailScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.20,
                 color: globals.COLOR_LIGHT_GREY,
               ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            child: const Text(
-              'Excursió a la Mola',
-              style: TextStyle(
-                fontSize: 20,
-              ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: const Text(
+            "Sortida a l'esglesia de Sant Joan",
+            style: TextStyle(
+              fontSize: 25,
+              color: Colors.white,
             ),
+          ),
+        ),
+        const Positioned(
+          right: 15,
+          top: 15,
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
+            size: 35,
+          ),
+        ),
+        Positioned(
+          left: 15,
+          top: 15,
+          child: InkWell(
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+              size: 35,
+            ),
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
         ),
       ],

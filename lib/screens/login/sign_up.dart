@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gesplai/screens/login/widgets/custom_textfield.dart';
+import 'package:gesplai/screens/funcions_utils.dart';
+import 'package:gesplai/screens/login/widgets/esplai_sign_up.dart';
+import 'package:gesplai/screens/login/widgets/individual_user_sign_up.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/user_login.dart';
 import '../../services/auth_service.dart';
+import '../../services/user_service.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -12,13 +16,20 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _fullnameController = TextEditingController();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _localizationController = TextEditingController();
+  var day;
+  var endHour;
+  var startHour;
+  int? _value = 1;
 
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    final userService = Provider.of<UserService>(context);
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -52,33 +63,55 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 25)),
-              CustomTextfield(
-                  controller: _usernameController,
-                  icon: const Icon(
-                    Icons.account_circle_outlined,
-                    size: 30,
-                    color: Colors.blue,
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                          value: 1,
+                          groupValue: _value,
+                          onChanged: (int? value) {
+                            setState(() {
+                              _value = value;
+                            });
+                          }),
+                      addHorizontalSpace(10),
+                      const Text('Individual user'),
+                    ],
                   ),
-                  type: 'text',
-                  labelText: 'Username'),
-              CustomTextfield(
-                  controller: _emailController,
-                  icon: const Icon(
-                    Icons.mail_outline,
-                    size: 30,
-                    color: Colors.blue,
+                  Row(
+                    children: [
+                      Radio(
+                          value: 2,
+                          groupValue: _value,
+                          onChanged: (int? value) {
+                            setState(() {
+                              _value = value;
+                            });
+                          }),
+                      addHorizontalSpace(10),
+                      const Text('Esplai'),
+                    ],
                   ),
-                  type: 'text',
-                  labelText: 'Email'),
-              CustomTextfield(
-                  controller: _passwordController,
-                  icon: const Icon(
-                    Icons.lock_outline,
-                    size: 30,
-                    color: Colors.blue,
-                  ),
-                  type: 'password',
-                  labelText: 'Password'),
+                ],
+              ),
+              addVerticalSpace(10),
+              _value == 1
+                  ? IndividualUserSignUp(
+                      fullnameController: _fullnameController,
+                      usernameController: _usernameController,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                    )
+                  : EsplaiSignUp(
+                      fullnameController: _fullnameController,
+                      usernameController: _usernameController,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      localizationController: _localizationController,
+                      day: day,
+                      startHour: startHour,
+                      endHour: endHour),
               Container(
                 margin: const EdgeInsets.only(top: 25),
                 padding: const EdgeInsets.all(10),
@@ -89,50 +122,34 @@ class _SignUpState extends State<SignUp> {
                         MaterialStateProperty.all<Color>(Colors.blue),
                   ),
                   onPressed: () async {
-                    await authService.createUserWithEmailAndPassword(
+                    UserLogin? _user =
+                        await authService.createUserWithEmailAndPassword(
                       _emailController.text,
                       _passwordController.text,
                     );
+                    if (_user != null) {
+                      if (_value == 1) {
+                        await userService.createUserIndividual(
+                          name: _fullnameController.text,
+                          username: _usernameController.text,
+                          email: _emailController.text,
+                          idUser: '1234',
+                        );
+                      } else {
+                        await userService.createUserEsplai(
+                          name: _fullnameController.text,
+                          username: _usernameController.text,
+                          email: _emailController.text,
+                          localization: _localizationController.text,
+                        );
+                      }
+                    }
                     Navigator.pop(context);
                   },
                   child: const Text(
                     'Sign Up',
                     style: TextStyle(color: Colors.white),
                   ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 2,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      color: Colors.black,
-                    ),
-                    Container(
-                      child: const Text('Or sign up with'),
-                    ),
-                    Container(
-                      height: 2,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      color: Colors.black,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(10),
-                constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
-                margin: const EdgeInsets.only(top: 30),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Image.asset('assets/images/google.png'),
                 ),
               ),
             ],

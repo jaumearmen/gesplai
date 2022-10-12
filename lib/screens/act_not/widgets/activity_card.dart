@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gesplai/models/activity.dart';
 import 'package:gesplai/screens/act_not/activity_detail_screen.dart';
 import 'package:gesplai/screens/widgets/icon_and_text.dart';
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gesplai/models/activity.dart';
-import 'package:gesplai/screens/act_not/edit_activity_screen.dart';
-import 'package:gesplai/screens/act_not/widgets/activity_card.dart';
-import 'package:gesplai/screens/funcions_utils.dart';
-import 'package:gesplai/services/activities_service.dart';
+import 'package:gesplai/models/event.dart';
+import 'package:gesplai/screens/act_not/add_activity_screen.dart';
+import 'package:gesplai/screens/act_not/event_detail_screen.dart';
+import 'package:gesplai/services/events_service.dart';
 import 'package:gesplai/globals.dart' as globals;
 import 'package:provider/provider.dart';
 
@@ -17,16 +16,18 @@ class ActNotListScreen extends StatefulWidget {
 class _ActNotListScreenState extends State<ActNotListScreen> {
   @override
   Widget build(BuildContext context) {
-    final activitiesService = Provider.of<ActivitiesService>(context);
-    List<Activity> activities = activitiesService.getActivities();
+    final eventsService = Provider.of<EventsService>(context);
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Chats'),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const EditActivitySceren()),
+                  builder: (context) => const AddActivityScreen()),
             );
           },
           backgroundColor: globals.COLOR_BLUE,
@@ -34,30 +35,67 @@ class _ActNotListScreenState extends State<ActNotListScreen> {
         ),
         body: Container(
           padding: const EdgeInsets.all(10),
-          child: ListView.builder(
-            itemCount: activities.length,
+          child: StreamBuilder<List<Event>>(
+            stream: EventsService.getEvents(),
+            builder: (context, snapshot) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return const Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return const Center(
+                        child: Text('Something Went Wrong Try later'));
+                  } else {
+                    final events = snapshot.data;
+
+                    if (events!.isEmpty) {
+                      return const Center(child: Text('No Users Found'));
+                    } else {
+                      return (ListView.builder(
+                        itemCount: events.length,
+                        itemBuilder: (context, index) {
+                          final event = events[index];
+                          return SizedBox(
+                            height: 75,
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EventDetailScreen(
+                                      title: event.title,
+                                      description: event.description,
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: Text(event.title),
+                            ),
+                          );
+                        },
+                      ));
+                    }
+                  }
+              }
+            },
+          ),
+          /*child: ListView.builder(
+            itemCount: events.length,
             itemBuilder: ((context, index) {
               return Column(
                 children: [
-                  ActivityCard(
-                    title: activities[index].title,
-                    localization: activities[index].localization,
-                    hora: activities[index].startHour,
-                    horari: activities[index].date,
-                    color: chooseColor(activities[index]),
+                  EventCard(
+                    title: events[index].title,
+                    description: events[index].description,
                   ),
                   addVerticalSpace(10),
                 ],
               );
             }),
           ),
+        ),*/
         ),
       ),
     );
-  }
-
-  chooseColor(Activity activity) {
-    // Aqui he de fer que si la activity falta menys d'un dia: color vermell, menys de 4 dies: color groc, else: verd
-    return Colors.green;
   }
 }

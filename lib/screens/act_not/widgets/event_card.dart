@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
 
-class ActivityCard extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final String title;
   final String description;
-  const ActivityCard({Key? key, required this.title, required this.description})
+  const EventCard({Key? key, required this.title, required this.description})
       : super(key: key);
 
   @override
