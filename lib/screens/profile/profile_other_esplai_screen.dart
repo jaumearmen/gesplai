@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:gesplai/screens/profile/images_tab_bar.dart';
-import 'package:gesplai/screens/profile/opinions_tab_bar.dart';
-import 'package:gesplai/screens/profile/widgets/custom_sliver_app_bar.dart';
-import 'package:provider/provider.dart';
+import 'package:gesplai/screens/profile/widgets/custom_sliver_app_bar_other.dart';
+import 'package:gesplai/screens/profile/widgets/images_tab_bar.dart';
+import 'package:gesplai/screens/profile/widgets/opinions_tab_bar.dart';
 import 'package:gesplai/services/profile_service.dart';
-
-import '../../services/auth_service.dart';
+import 'package:provider/provider.dart';
 import 'package:gesplai/globals.dart' as globals;
+import '../../models/user.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfileOtherEsplaiScreen extends StatefulWidget {
+  final User user;
+  const ProfileOtherEsplaiScreen({Key? key, required this.user})
+      : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<ProfileOtherEsplaiScreen> createState() =>
+      _ProfileOtherEsplaiScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _ProfileOtherEsplaiScreenState extends State<ProfileOtherEsplaiScreen> {
   @override
   Widget build(BuildContext context) {
-    final authService = Provider.of<AuthService>(context);
     final profileService = Provider.of<ProfileService>(context);
-    return SafeArea(
-      child: DefaultTabController(
+    return Scaffold(
+      body: SafeArea(
+          child: DefaultTabController(
         length: 2,
         child: Scaffold(
           backgroundColor: globals.COLOR_LIGHT_GREY,
           body: NestedScrollView(
             headerSliverBuilder: (context, isScrolled) {
               return [
-                const SliverAppBar(
-                  flexibleSpace: CustomSliverAppBar(),
+                SliverAppBar(
+                  flexibleSpace: CustomSliverAppBarOther(
+                    user: widget.user,
+                    isOther: true,
+                  ),
                   collapsedHeight: 380,
                   expandedHeight: 380,
                   backgroundColor: globals.COLOR_LIGHT_GREY,
@@ -73,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }
@@ -86,7 +86,7 @@ class MyDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      color: globals.COLOR_WHITE,
+      color: Colors.white,
       child: tabBar,
     );
   }

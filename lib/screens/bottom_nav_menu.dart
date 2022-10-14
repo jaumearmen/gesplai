@@ -2,27 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:gesplai/screens/act_not/act_not_list_screen.dart';
 import 'package:gesplai/screens/attendance/calendar_screen.dart';
 import 'package:gesplai/screens/chat/chat_list_screen.dart';
-import 'package:gesplai/screens/profile/profile_screen.dart';
+import 'package:gesplai/screens/profile/profile_esplai_screen.dart';
 import 'package:gesplai/screens/search/search_screen.dart';
 import 'package:gesplai/globals.dart' as globals;
 
 class BottomNavMenu extends StatefulWidget {
-  const BottomNavMenu({Key? key}) : super(key: key);
+  final String email;
+  const BottomNavMenu({required this.email});
 
   @override
   State<BottomNavMenu> createState() => _BottomNavMenuState();
 }
 
 class _BottomNavMenuState extends State<BottomNavMenu> {
-  int pageIndex = 3;
+  int pageIndex = 4;
 
   final pages = [
     const CalendarScreen(),
     const SearchScreen(),
     const ChatListScreen(),
     const ActNotListScreen(),
-    const ProfileScreen(),
+    const ProfileEsplaiScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

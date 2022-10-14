@@ -5,7 +5,7 @@ class UserField {
 }
 
 class User {
-  final String idUser;
+  final String userId;
   final String name;
   final String username;
   final String email;
@@ -16,9 +16,10 @@ class User {
   final String? startHour;
   final String? endHour;
   final DateTime? lastMessageTime;
+  final bool isEsplai;
 
   User({
-    required this.idUser,
+    required this.userId,
     required this.name,
     required this.username,
     required this.email,
@@ -29,10 +30,11 @@ class User {
     this.startHour,
     this.endHour,
     this.lastMessageTime,
+    required this.isEsplai,
   });
 
   Map<String, dynamic> toJson() => {
-        'idUser': idUser,
+        'userId': userId,
         'name': name,
         'username': username,
         'email': email,
@@ -43,10 +45,11 @@ class User {
         'startHour': startHour,
         'endHour': endHour,
         'lastMessageTime': Utils.fromDateTimeToJson(lastMessageTime!),
+        'isEsplai': isEsplai,
       };
 
   static User fromJson(Map<String, dynamic> json) => User(
-        idUser: json['idUser'],
+        userId: json['userId'],
         name: json['name'],
         username: json['username'],
         email: json['email'],
@@ -57,5 +60,6 @@ class User {
         startHour: json['startHour'],
         endHour: json['endHour'],
         lastMessageTime: Utils.toDateTime(json['lastMessageTime']),
+        isEsplai: json['isEsplai'],
       );
 }

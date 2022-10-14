@@ -1,61 +1,48 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/user.dart';
+import '../models/user.dart' as UserAux;
 
 class UserService {
-  Future createUserIndividual({
-    String? name,
-    String? username,
-    String? email,
-    String? description,
-    String? idUser,
-  }) async {
-    String retVal = 'error';
-    try {
-      await FirebaseFirestore.instance.collection("users").doc().set({
-        'name': name,
-        'username': username,
-        'email': email,
-        'description': description,
-      });
-    } catch (e) {}
-    return retVal;
-  }
-
-  Future createUserEsplai({
-    required String name,
-    String? username,
-    required String email,
-    String? description,
-    String? idEsplai,
-    String? localization,
-    String? day,
-    String? startHour,
-    String? endHour,
-  }) async {
-    String retVal = 'error';
-    try {
-      await FirebaseFirestore.instance.collection("users").doc().set({
-        'name': name,
-        'username': username,
-        'email': email,
-        'description': description,
-        'localization': localization,
-        'day': day,
-        'startHour': startHour,
-        'endHour': endHour,
-      });
-    } catch (e) {}
-    return retVal;
-  }
-
-  static Future<User?> getUser(String idUser) async {
-    final doc = FirebaseFirestore.instance.collection('users').doc(idUser);
+  static Future<UserAux.User?> getUser() async {
+    final doc = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
     final snapshot = await doc.get();
 
     if (snapshot.exists) {
-      return User.fromJson(snapshot.data()!);
+      return UserAux.User.fromJson(snapshot.data()!);
     }
     return null;
+  }
+
+  static Future<UserAux.User> getUserByEmail(String email) async {
+    final doc = FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email);
+    final snapshot = await doc.get();
+    var user =
+        snapshot.docs.map((doc) => UserAux.User.fromJson(doc.data())).toList();
+    return user[0];
+  }
+
+  static Future<UserAux.User> getUserByUsername(String username) async {
+    final doc = FirebaseFirestore.instance
+        .collection('users')
+        .where('username', isEqualTo: username);
+    final snapshot = await doc.get();
+    var user =
+        snapshot.docs.map((doc) => UserAux.User.fromJson(doc.data())).toList();
+    return user[0];
+  }
+
+  static Future<List<UserAux.User>> getAllUsers(String userId) async {
+    final doc = FirebaseFirestore.instance
+        .collection('users')
+        .where('userId', isNotEqualTo: userId);
+    final snapshot = await doc.get();
+    var users =
+        snapshot.docs.map((doc) => UserAux.User.fromJson(doc.data())).toList();
+    return users;
   }
 }

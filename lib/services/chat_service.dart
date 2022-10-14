@@ -30,7 +30,7 @@ class ChatService {
     var querySnapshots = await collection.get();
     List<User> users = [];
     for (var snapshot in querySnapshots.docs) {
-      User? u = await UserService.getUser(snapshot.id);
+      User? u = await UserService.getUser();
       users.add(u!);
     }
     return users;
@@ -40,6 +40,13 @@ class ChatService {
       String idUser, String idReceiver, String message, String username) async {
     final refMessages = FirebaseFirestore.instance
         .collection('users/$idUser/chats/$idReceiver/messages');
+
+    /*final reference = FirebaseFirestore.instance
+        .collection('users')
+        .doc(idUser)
+        .collection('chats')
+        .doc(idReceiver)
+        .collection('messages');*/
 
     final newMessage = Message(
       idWriter: idUser,

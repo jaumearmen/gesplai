@@ -14,4 +14,4 @@ const TextTheme TEXT_THEME_DEFAULT = TextTheme(
     //headline1: GoogleFonts.roboto(color: COLOR_BLACK),
     );
 
-String idUser = 'w78OQolsgjc7bKd6LYZA';
+String uid = '';

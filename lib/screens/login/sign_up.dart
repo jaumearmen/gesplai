@@ -4,7 +4,6 @@ import 'package:gesplai/screens/login/widgets/esplai_sign_up.dart';
 import 'package:gesplai/screens/login/widgets/individual_user_sign_up.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/user_login.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 
@@ -122,29 +121,35 @@ class _SignUpState extends State<SignUp> {
                         MaterialStateProperty.all<Color>(Colors.blue),
                   ),
                   onPressed: () async {
-                    UserLogin? _user =
-                        await authService.createUserWithEmailAndPassword(
-                      _emailController.text,
-                      _passwordController.text,
-                    );
-                    if (_user != null) {
-                      if (_value == 1) {
-                        await userService.createUserIndividual(
-                          name: _fullnameController.text,
-                          username: _usernameController.text,
-                          email: _emailController.text,
-                          idUser: '1234',
-                        );
-                      } else {
-                        await userService.createUserEsplai(
-                          name: _fullnameController.text,
-                          username: _usernameController.text,
-                          email: _emailController.text,
-                          localization: _localizationController.text,
-                        );
-                      }
+                    if (_value == 1) {
+                      await authService.createUserWithEmailAndPassword(
+                        _emailController.text,
+                        _passwordController.text,
+                        _fullnameController.text,
+                        _usernameController.text,
+                        'description',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        false,
+                      );
+                    } else {
+                      await authService.createUserWithEmailAndPassword(
+                        _emailController.text,
+                        _passwordController.text,
+                        _fullnameController.text,
+                        _usernameController.text,
+                        'description',
+                        '',
+                        day.toString(),
+                        startHour.toString(),
+                        endHour.toString(),
+                        _localizationController.text,
+                        true,
+                      );
                     }
-                    Navigator.pop(context);
                   },
                   child: const Text(
                     'Sign Up',

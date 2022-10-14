@@ -29,14 +29,14 @@ class _ChatMessagesState extends State<ChatMessages> {
                   color: Colors.white,
                 ),
                 child: MessagesWidget(
-                  idUser: globals.idUser,
-                  idReceiver: widget.user.idUser,
+                  idUser: globals.uid,
+                  idReceiver: widget.user.userId,
                 ),
               ),
             ),
             NewMessageWidget(
-              idUser: globals.idUser,
-              idReceiver: widget.user.idUser,
+              idUser: globals.uid,
+              idReceiver: widget.user.userId,
               username: widget.user.username,
             ),
           ],

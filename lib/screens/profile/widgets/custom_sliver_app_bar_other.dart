@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/models/user.dart';
 import 'package:gesplai/screens/chat/chat_messages.dart';
-import 'package:gesplai/screens/profile/widgets/pop_up_custom_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
 import '../../../services/auth_service.dart';
 
-class CustomSliverAppBar extends StatefulWidget {
+class CustomSliverAppBarOther extends StatefulWidget {
   final User? user;
   final bool isOther;
-  const CustomSliverAppBar({Key? key, this.user, required this.isOther})
+  const CustomSliverAppBarOther({Key? key, this.user, required this.isOther})
       : super(key: key);
 
   @override
-  State<CustomSliverAppBar> createState() => _CustomSliverAppBarState();
+  State<CustomSliverAppBarOther> createState() =>
+      _CustomSliverAppBarOtherState();
 }
 
-class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
+class _CustomSliverAppBarOtherState extends State<CustomSliverAppBarOther> {
   @override
   void dispose() {
     super.dispose();
@@ -32,32 +32,6 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
           Container(
             child: Stack(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    PopUpCustomMenu(menuList: [
-                      const PopupMenuItem(
-                          child: ListTile(
-                        leading: Icon(Icons.add_a_photo),
-                        title: Text('Afegeix una foto'),
-                      )),
-                      PopupMenuItem(
-                          child: ListTile(
-                        leading: const Icon(Icons.logout_rounded),
-                        title: const Text('Tanca sessió'),
-                        onTap: () {
-                          Navigator.pop(context, "Tanca sessió");
-                          authService.signOut();
-                        },
-                      )),
-                      const PopupMenuItem(
-                          child: ListTile(
-                        leading: Icon(Icons.app_registration),
-                        title: Text("Inscriure's a una esplai"),
-                      )),
-                    ]),
-                  ],
-                ),
                 Column(
                   children: [
                     addVerticalSpace(30),
@@ -156,6 +130,10 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
                         onPressed: () {},
                         child: const Text('Edit Profile'),
                       ),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text("Inscriure's"),
+                )
               ],
             ),
           ),
