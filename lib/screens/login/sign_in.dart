@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gesplai/screens/login/forgot_password.dart';
 import 'package:gesplai/screens/login/sign_up.dart';
 import 'package:gesplai/screens/login/widgets/custom_textfield.dart';
 import 'package:gesplai/globals.dart' as globals;
@@ -36,13 +37,13 @@ class _SignInState extends State<SignIn> {
                 margin: const EdgeInsets.only(top: 50),
                 constraints:
                     const BoxConstraints(maxHeight: 100, maxWidth: 100),
-                child: Image.asset('assets/images/logoTemporal.png'),
+                child: Image.asset('assets/images/logo_gesplai.png'),
               ),
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(top: 10),
                 child: const Text(
-                  'Welcome back!',
+                  'Benvingut!',
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -52,7 +53,7 @@ class _SignInState extends State<SignIn> {
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(top: 5),
                 child: Text(
-                  'Log to your account',
+                  'Inicia sessió al teu compte',
                   style: GoogleFonts.leagueSpartan(fontSize: 15),
                 ),
               ),
@@ -75,6 +76,24 @@ class _SignInState extends State<SignIn> {
                   ),
                   type: 'password',
                   labelText: 'Password'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ForgotPassword()),
+                      );
+                    },
+                    child: const Text(
+                      'Recuperar contrasenya?',
+                      style: TextStyle(color: Colors.blue),
+                    ),
+                  )
+                ],
+              ),
               Container(
                 margin: const EdgeInsets.only(top: 25),
                 padding: const EdgeInsets.all(10),
@@ -115,19 +134,6 @@ class _SignInState extends State<SignIn> {
                       color: Colors.black,
                     ),
                   ],
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                padding: const EdgeInsets.all(10),
-                constraints: const BoxConstraints(maxHeight: 60, maxWidth: 60),
-                margin: const EdgeInsets.only(top: 30),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: Image.asset('assets/images/google.png'),
                 ),
               ),
               Container(

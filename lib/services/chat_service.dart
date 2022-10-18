@@ -27,38 +27,65 @@ class ChatService {
   static Future<List<User>> getChatUsers(String idUser) async {
     var collection =
         FirebaseFirestore.instance.collection('users/$idUser/chats');
-    var querySnapshots = await collection.get();
+    var querySnapshots =
+        await collection.get(); // Llista de documents de conversa
     List<User> users = [];
     for (var snapshot in querySnapshots.docs) {
-      User? u = await UserService.getUser();
-      users.add(u!);
+      User? u = await UserService.getUserById(snapshot.data()['idReceiver']);
+      users.add(u);
     }
     return users;
   }
 
-  static Future uploadMessage(
-      String idUser, String idReceiver, String message, String username) async {
-    final refMessages = FirebaseFirestore.instance
-        .collection('users/$idUser/chats/$idReceiver/messages');
-
-    /*final reference = FirebaseFirestore.instance
+  static Future createMessage(
+      {required String idUser, required String idReceiver}) async {
+    FirebaseFirestore.instance
         .collection('users')
         .doc(idUser)
         .collection('chats')
         .doc(idReceiver)
-        .collection('messages');*/
+        .set(
+      {'idReceiver': idReceiver},
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(idReceiver)
+        .collection('chats')
+        .doc(idUser)
+        .set(
+      {'idReceiver': idUser},
+    );
+  }
 
-    final newMessage = Message(
+  static Future uploadMessage(
+      String idUser, String idReceiver, String message, String username) async {
+    final refMessages1 = FirebaseFirestore.instance
+        .collection('users/$idUser/chats/$idReceiver/messages');
+    final refMessages2 = FirebaseFirestore.instance
+        .collection('users/$idReceiver/chats/$idUser/messages');
+
+    final newMessage1 = Message(
       idWriter: idUser,
       username: username,
       message: message,
       createdAt: DateTime.now(),
     );
-    await refMessages.add(newMessage.toJson());
+    await refMessages1.add(newMessage1.toJson());
+
+    final newMessage2 = Message(
+      idWriter: idUser,
+      username: username,
+      message: message,
+      createdAt: DateTime.now(),
+    );
+    await refMessages2.add(newMessage2.toJson());
 
     final refUsers = FirebaseFirestore.instance.collection('users');
     await refUsers
         .doc(idUser)
+        .update({UserField.lastMessageTime: DateTime.now()});
+    await refUsers
+        .doc(idReceiver)
         .update({UserField.lastMessageTime: DateTime.now()});
   }
 

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gesplai/models/user.dart';
 import 'package:gesplai/screens/chat/widgets/messages_widget.dart';
 import 'package:gesplai/screens/chat/widgets/new_message_widget.dart';
-import 'package:gesplai/globals.dart' as globals;
 
 class ChatMessages extends StatefulWidget {
-  final User user;
-  const ChatMessages({Key? key, required this.user}) : super(key: key);
+  final User userReceiver;
+  final String userWriterId;
+  const ChatMessages(
+      {Key? key, required this.userReceiver, required this.userWriterId})
+      : super(key: key);
 
   @override
   State<ChatMessages> createState() => _ChatMessagesState();
@@ -17,7 +19,7 @@ class _ChatMessagesState extends State<ChatMessages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.user.name),
+        title: Text(widget.userReceiver.name),
       ),
       body: SafeArea(
         child: Column(
@@ -29,15 +31,15 @@ class _ChatMessagesState extends State<ChatMessages> {
                   color: Colors.white,
                 ),
                 child: MessagesWidget(
-                  idUser: globals.uid,
-                  idReceiver: widget.user.userId,
+                  idUser: widget.userWriterId,
+                  idReceiver: widget.userReceiver.userId,
                 ),
               ),
             ),
             NewMessageWidget(
-              idUser: globals.uid,
-              idReceiver: widget.user.userId,
-              username: widget.user.username,
+              idUser: widget.userWriterId,
+              idReceiver: widget.userReceiver.userId,
+              username: widget.userReceiver.username,
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/models/user.dart';
-import 'package:gesplai/screens/chat/chat_messages.dart';
+import 'package:gesplai/screens/profile/edit_profile_esplai.dart';
 import 'package:gesplai/screens/profile/widgets/pop_up_custom_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
@@ -50,10 +50,13 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
                           authService.signOut();
                         },
                       )),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                           child: ListTile(
-                        leading: Icon(Icons.app_registration),
-                        title: Text("Inscriure's a una esplai"),
+                        leading: const Icon(Icons.password),
+                        title: const Text("Identificador de l'esplai"),
+                        onTap: () {
+                          openDialog(widget.user!.userId);
+                        },
                       )),
                     ]),
                   ],
@@ -108,12 +111,15 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
             child: RichText(
               text: TextSpan(
                 style: DefaultTextStyle.of(context).style,
-                children: const [
-                  TextSpan(
+                children: [
+                  const TextSpan(
                     text: 'Horari: ',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: 'Dissabtes de 17:30h a 19:30h'),
+                  const TextSpan(text: 'Dissabte de '),
+                  TextSpan(text: widget.user!.startHour),
+                  const TextSpan(text: ' a '),
+                  TextSpan(text: widget.user!.endHour),
                 ],
               ),
             ),
@@ -136,31 +142,46 @@ class _CustomSliverAppBarState extends State<CustomSliverAppBar> {
           ),
           addVerticalSpace(20),
           Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                widget.isOther
-                    ? ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatMessages(
-                                      user: widget.user!,
-                                    )),
-                          );
-                        },
-                        child: const Text('Message'),
-                      )
-                    : ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Edit Profile'),
-                      ),
-              ],
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfileEsplai(
+                      user: widget.user!,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Editar Perfil'),
             ),
           ),
         ],
       ),
     );
   }
+
+  Future openDialog(String idEsplai) => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Identificador de l'esplai"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                  "Aquest codi permet a altres usuari poder inscriure's i registrar-se en aquest esplai. Es recomana no enviar a usuaris que no s'està segur que s'inscriuran."),
+              addVerticalSpace(10),
+              Text(idEsplai),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Acceptar'),
+            ),
+          ],
+        ),
+      );
 }

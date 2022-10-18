@@ -1,7 +1,10 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
 import 'package:gesplai/screens/login/widgets/custom_textfield.dart';
+import 'package:gesplai/services/events_service.dart';
+import 'package:gesplai/services/user_service.dart';
+
+import '../../models/user.dart';
 
 class AddActivityScreen extends StatefulWidget {
   const AddActivityScreen({Key? key}) : super(key: key);
@@ -11,9 +14,19 @@ class AddActivityScreen extends StatefulWidget {
 }
 
 class _AddActivityScreenState extends State<AddActivityScreen> {
-  final _locationController = TextEditingController();
+  final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  var _day;
+  late User _user;
+
+  Future<void> getUser() async {
+    _user = (await UserService.getUser())!;
+  }
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +45,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                /*Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Icon(Icons.clear),
-                    Icon(Icons.verified),
-                  ],
-                ),*/
                 TextButton(
                   child: const Text(
                     'Add a descriptive picture',
@@ -50,84 +56,16 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             ),
             addVerticalSpace(10),
             CustomTextfield(
-              controller: _locationController,
-              icon: const Icon(Icons.location_on_outlined),
-              labelText: 'Location',
+              controller: _titleController,
+              icon: const Icon(Icons.title),
+              labelText: "Títol de l'activitat/notificació",
               type: 'text',
-            ),
-            addVerticalSpace(10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: DateTimePicker(
-                type: DateTimePickerType.date,
-                dateMask: 'd MMM, yyyy',
-                initialValue: DateTime.now().toString(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                onChanged: (val) => print(val),
-                onSaved: (val) {
-                  _day = val!;
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      width: 1,
-                    ),
-                  ),
-                  labelText: "Dia de l'activitat",
-                  prefixIcon: const Icon(
-                    Icons.calendar_today_outlined,
-                  ),
-                ),
-              ),
-            ),
-            addVerticalSpace(10),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: DateTimePicker(
-                type: DateTimePickerType.time,
-                onChanged: (val) => print(val),
-                onSaved: (val) {
-                  _day = val!;
-                },
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      width: 0,
-                      style: BorderStyle.none,
-                    ),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: const BorderSide(
-                      width: 1,
-                    ),
-                  ),
-                  labelText: 'Hora començament activitat',
-                  prefixIcon: const Icon(
-                    Icons.schedule,
-                  ),
-                ),
-              ),
             ),
             addVerticalSpace(10),
             CustomTextfield(
               controller: _descriptionController,
               icon: const Icon(Icons.description),
-              labelText: "Descriu l'activitat",
+              labelText: "Descriu l'activitat/notificació",
               type: 'multiline',
             ),
             addVerticalSpace(25),
@@ -138,6 +76,11 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                   margin: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: () {
+                      EventsService.createEvent(
+                        title: _titleController.text,
+                        description: _descriptionController.text,
+                        idEsplai: _user.userId,
+                      );
                       Navigator.pop(context);
                     },
                     child: const Icon(Icons.check),

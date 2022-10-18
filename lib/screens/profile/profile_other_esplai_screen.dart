@@ -9,7 +9,9 @@ import '../../models/user.dart';
 
 class ProfileOtherEsplaiScreen extends StatefulWidget {
   final User user;
-  const ProfileOtherEsplaiScreen({Key? key, required this.user})
+  final String idEsplai;
+  const ProfileOtherEsplaiScreen(
+      {Key? key, required this.user, required this.idEsplai})
       : super(key: key);
 
   @override
@@ -65,9 +67,15 @@ class _ProfileOtherEsplaiScreenState extends State<ProfileOtherEsplaiScreen> {
             },
             body: TabBarView(
               children: [
-                ImagesTabBar(
-                  images: profileService.getEsplaiImages(),
-                ),
+                widget.idEsplai == widget.user.userId
+                    ? ImagesTabBar(
+                        images: profileService.getEsplaiImages(),
+                      )
+                    : const Center(
+                        child: Text(
+                          "Registra't en aquest esplai per veure el contingut",
+                        ),
+                      ),
                 const OpinionsTabBar(),
               ],
             ),

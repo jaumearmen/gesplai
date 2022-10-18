@@ -5,7 +5,8 @@ import 'package:gesplai/screens/profile/profile_other_user_screen.dart';
 import 'package:gesplai/services/user_service.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  final String userId;
+  const SearchScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -15,13 +16,20 @@ class _SearchScreenState extends State<SearchScreen> {
   final _searchController = TextEditingController();
   List<User> _users = [];
   List<User> _allUsers = [];
-
+  String _userId = '';
+  String _esplaiId = '';
   Future<void> getAllUsers() async {
     var user = await UserService.getUser();
     var users = await UserService.getAllUsers(user!.userId);
     setState(() {
       _users = users;
       _allUsers = users;
+      _userId = user.userId;
+      if (user.idEsplai == null) {
+        _esplaiId = '';
+      } else {
+        _esplaiId = user.idEsplai!;
+      }
     });
   }
 
@@ -79,9 +87,13 @@ class _SearchScreenState extends State<SearchScreen> {
                       if (user.isEsplai) {
                         screen = ProfileOtherEsplaiScreen(
                           user: user,
+                          idEsplai: _esplaiId,
                         );
                       } else {
-                        screen = const ProfileOtherUserScreen();
+                        screen = ProfileOtherUserScreen(
+                          userId: _userId,
+                          otherUserId: user.userId,
+                        );
                       }
                       Navigator.push(
                         context,

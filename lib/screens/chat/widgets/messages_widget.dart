@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gesplai/services/chat_service.dart';
-import '../../../globals.dart' as globals;
 import '../../../models/message.dart';
 import 'message_widget.dart';
 
@@ -37,7 +36,7 @@ class MessagesWidget extends StatelessWidget {
 
                           return MessageWidget(
                             message: message,
-                            isMe: message.idWriter == globals.uid,
+                            isMe: message.idWriter == idUser,
                           );
                         },
                       );

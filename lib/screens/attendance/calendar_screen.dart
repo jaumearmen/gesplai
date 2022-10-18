@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_calendar/flutter_clean_calendar.dart';
+import 'package:gesplai/models/user.dart';
+import 'package:gesplai/screens/attendance/attendance_screen.dart';
+import 'package:gesplai/screens/widgets/no_esplai_screen.dart';
+import 'package:gesplai/services/user_service.dart';
 import 'package:intl/intl.dart';
 
 class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({Key? key}) : super(key: key);
+  final String userId;
+  const CalendarScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
@@ -12,6 +17,29 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   var selectedDay;
   var selectedEvent;
+  String _idEsplai = '';
+  bool teEsplai = false;
+  bool esEsplai = false;
+
+  Future<void> getUser() async {
+    User? aux = await UserService.getUser();
+    if (aux!.isEsplai) {
+      setState(() {
+        _idEsplai = aux.userId;
+        esEsplai = true;
+      });
+    } else if (aux.idEsplai == '') {
+      setState(() {
+        _idEsplai = '';
+        teEsplai = false;
+      });
+    } else {
+      setState(() {
+        _idEsplai = aux.idEsplai!;
+        teEsplai = true;
+      });
+    }
+  }
 
   final Map<DateTime, List<CleanCalendarEvent>> events = {
     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day): [
@@ -65,6 +93,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   void initState() {
+    getUser();
     selectedEvent = events[selectedDay] ?? [];
     super.initState();
   }
@@ -72,43 +101,60 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
+        /*appBar: AppBar(
         title: Text('Calendar'),
         centerTitle: true,
       ),*/
-      body: SafeArea(
-        child: Container(
-          child: Calendar(
-            startOnMonday: true,
-            selectedColor: Colors.blue,
-            todayColor: Colors.red,
-            eventColor: Colors.green,
-            eventDoneColor: Colors.amber,
-            bottomBarColor: Colors.deepOrange,
-            onRangeSelected: (range) {
-              print('selected Day ${range.from},${range.to}');
-            },
-            onDateSelected: (date) {
-              return _handleData(date);
-            },
-            events: events,
-            isExpandable: true,
-            isExpanded: true,
-            dayOfWeekStyle: const TextStyle(
-              fontSize: 15,
-              color: Colors.black12,
-              fontWeight: FontWeight.w100,
-            ),
-            bottomBarTextStyle: const TextStyle(
-              color: Colors.white,
-            ),
-            hideBottomBar: false,
-            hideArrows: false,
-            weekDays: const ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          ),
-        ),
-      ),
-    );
+        body: teEsplai || esEsplai
+            ? SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Calendar(
+                    startOnMonday: true,
+                    selectedColor: Colors.blue,
+                    todayColor: Colors.red,
+                    eventColor: Colors.green,
+                    eventDoneColor: Colors.amber,
+                    bottomBarColor: Colors.deepOrange,
+                    onRangeSelected: (range) {
+                      print('selected Day ${range.from},${range.to}');
+                    },
+                    onDateSelected: (date) {
+                      return _handleData(date);
+                    },
+                    events: events,
+                    isExpandable: true,
+                    isExpanded: true,
+                    dayOfWeekStyle: const TextStyle(
+                      fontSize: 15,
+                      color: Colors.black12,
+                      fontWeight: FontWeight.w100,
+                    ),
+                    bottomBarTextStyle: const TextStyle(
+                      color: Colors.white,
+                    ),
+                    hideBottomBar: false,
+                    hideArrows: false,
+                    weekDays: const [
+                      'Mon',
+                      'Tue',
+                      'Wed',
+                      'Thu',
+                      'Fri',
+                      'Sat',
+                      'Sun'
+                    ],
+                    onEventSelected: (_selectedEvents) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AttendanceScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            : const NoEsplaiScreen());
   }
 
   Widget _buildEventList() {

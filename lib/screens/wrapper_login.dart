@@ -19,7 +19,7 @@ class WrapperLogin extends StatelessWidget {
             return user == null
                 ? const SignIn()
                 : BottomNavMenu(
-                    email: user.email!,
+                    userId: user.uid!,
                   );
           } else {
             return const Center(

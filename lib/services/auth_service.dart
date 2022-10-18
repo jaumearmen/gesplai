@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:gesplai/models/user_login.dart';
 import 'package:gesplai/models/user.dart' as UserAux;
-import 'package:gesplai/globals.dart' as globals;
+import 'package:gesplai/services/attendance_service.dart';
 
 class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
@@ -72,7 +72,15 @@ class AuthService {
         isEsplai: isEsplai,
       );
 
-      globals.uid = credential.user!.uid;
+      List<String> usersInscrits = [];
+      List<bool> attendance = [];
+      if (newUser.isEsplai) {
+        AttendanceService.createAttendance(
+          usersInscrits: usersInscrits,
+          attendance: attendance,
+          idEsplai: newUser.userId,
+        );
+      }
       await refUser.set(newUser.toJson());
       return _userFromFirebase(credential.user);
     } on auth.FirebaseAuthException catch (e) {

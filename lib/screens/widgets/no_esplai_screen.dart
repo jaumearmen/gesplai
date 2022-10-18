@@ -20,7 +20,7 @@ class NoEsplaiScreen extends StatelessWidget {
             ),
             addVerticalSpace(20),
             const Text(
-              'Regístrate en un esplai para poder tener esta información',
+              "Regístra't en un esplai per tenir més informació",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,

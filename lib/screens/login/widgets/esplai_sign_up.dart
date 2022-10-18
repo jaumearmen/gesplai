@@ -91,9 +91,10 @@ class _EsplaiSignUpState extends State<EsplaiSignUp> {
             initialValue: DateTime.now().toString(),
             firstDate: DateTime(2000),
             lastDate: DateTime(2100),
-            onChanged: (val) => print(val),
-            onSaved: (val) {
-              widget.day = val!;
+            onChanged: (val) {
+              setState(() {
+                widget.day = val;
+              });
             },
             decoration: InputDecoration(
               filled: true,
@@ -120,9 +121,10 @@ class _EsplaiSignUpState extends State<EsplaiSignUp> {
           padding: const EdgeInsets.all(10),
           child: DateTimePicker(
             type: DateTimePickerType.time,
-            onChanged: (val) => print(val),
-            onSaved: (val) {
-              widget.day = val!;
+            onChanged: (val) {
+              setState(() {
+                widget.startHour = val;
+              });
             },
             decoration: InputDecoration(
               filled: true,
@@ -152,9 +154,10 @@ class _EsplaiSignUpState extends State<EsplaiSignUp> {
           padding: const EdgeInsets.all(10),
           child: DateTimePicker(
             type: DateTimePickerType.time,
-            onChanged: (val) => print(val),
-            onSaved: (val) {
-              widget.day = val!;
+            onChanged: (val) {
+              setState(() {
+                widget.endHour = val;
+              });
             },
             decoration: InputDecoration(
               filled: true,

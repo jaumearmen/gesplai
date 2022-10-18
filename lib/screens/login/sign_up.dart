@@ -1,6 +1,7 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:gesplai/screens/funcions_utils.dart';
-import 'package:gesplai/screens/login/widgets/esplai_sign_up.dart';
+import 'package:gesplai/screens/login/widgets/custom_textfield.dart';
 import 'package:gesplai/screens/login/widgets/individual_user_sign_up.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +21,9 @@ class _SignUpState extends State<SignUp> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _localizationController = TextEditingController();
-  var day;
-  var endHour;
-  var startHour;
+  String day = '';
+  String endHour = '';
+  String startHour = '';
   int? _value = 1;
 
   @override
@@ -39,7 +40,7 @@ class _SignUpState extends State<SignUp> {
                 margin: const EdgeInsets.only(top: 50),
                 constraints:
                     const BoxConstraints(maxHeight: 100, maxWidth: 100),
-                child: Image.asset('assets/images/logoTemporal.png'),
+                child: Image.asset('assets/images/logo_gesplai.png'),
               ),
               Container(
                 alignment: Alignment.center,
@@ -102,15 +103,7 @@ class _SignUpState extends State<SignUp> {
                       emailController: _emailController,
                       passwordController: _passwordController,
                     )
-                  : EsplaiSignUp(
-                      fullnameController: _fullnameController,
-                      usernameController: _usernameController,
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      localizationController: _localizationController,
-                      day: day,
-                      startHour: startHour,
-                      endHour: endHour),
+                  : esplaiSignUp(),
               Container(
                 margin: const EdgeInsets.only(top: 25),
                 padding: const EdgeInsets.all(10),
@@ -161,6 +154,163 @@ class _SignUpState extends State<SignUp> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget esplaiSignUp() {
+    return Column(
+      children: [
+        CustomTextfield(
+          controller: _fullnameController,
+          icon: const Icon(
+            Icons.account_circle_outlined,
+            size: 30,
+            color: Colors.blue,
+          ),
+          type: 'text',
+          labelText: "Nom de l'esplai",
+        ),
+        CustomTextfield(
+          controller: _usernameController,
+          icon: const Icon(
+            Icons.account_circle_outlined,
+            size: 30,
+            color: Colors.blue,
+          ),
+          type: 'text',
+          labelText: 'Username',
+        ),
+        CustomTextfield(
+          controller: _emailController,
+          icon: const Icon(
+            Icons.mail_outline,
+            size: 30,
+            color: Colors.blue,
+          ),
+          type: 'text',
+          labelText: 'Email',
+        ),
+        CustomTextfield(
+          controller: _passwordController,
+          icon: const Icon(
+            Icons.lock_outline,
+            size: 30,
+            color: Colors.blue,
+          ),
+          type: 'password',
+          labelText: 'Contrasenya',
+        ),
+        CustomTextfield(
+          controller: _localizationController,
+          icon: const Icon(
+            Icons.place,
+            size: 30,
+            color: Colors.blue,
+          ),
+          type: 'text',
+          labelText: 'Localització',
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: DateTimePicker(
+            type: DateTimePickerType.date,
+            dateMask: 'd MMM, yyyy',
+            initialValue: DateTime.now().toString(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+            onChanged: (val) {
+              setState(() {
+                day = val;
+              });
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 1,
+                ),
+              ),
+              labelText: 'Quin dia comença esplai?',
+              prefixIcon: const Icon(Icons.event, color: Colors.blue),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: DateTimePicker(
+            type: DateTimePickerType.time,
+            onChanged: (val) {
+              setState(() {
+                startHour = val;
+              });
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 1,
+                ),
+              ),
+              labelText: 'A quina hora comença esplai?',
+              prefixIcon: const Icon(
+                Icons.timer,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: DateTimePicker(
+            type: DateTimePickerType.time,
+            onChanged: (val) {
+              setState(() {
+                endHour = val;
+              });
+            },
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(
+                  width: 1,
+                ),
+              ),
+              labelText: 'A quina hora acaba esplai?',
+              prefixIcon: const Icon(
+                Icons.lock_clock,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

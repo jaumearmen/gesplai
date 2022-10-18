@@ -20,7 +20,7 @@ class NoXatsScreen extends StatelessWidget {
             ),
             addVerticalSpace(20),
             const Text(
-              'No tienes ningún xat disponible',
+              'No tens cap xat disponible',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,

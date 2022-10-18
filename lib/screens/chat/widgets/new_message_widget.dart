@@ -23,6 +23,9 @@ class _NewMessageWidgetState extends State<NewMessageWidget> {
   void sendMessage() async {
     FocusScope.of(context).unfocus();
 
+    await ChatService.createMessage(
+        idUser: widget.idUser, idReceiver: widget.idReceiver);
+
     await ChatService.uploadMessage(
         widget.idUser, widget.idReceiver, message, widget.username);
 

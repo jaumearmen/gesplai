@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gesplai/screens/act_not/act_not_list_screen.dart';
 import 'package:gesplai/screens/attendance/calendar_screen.dart';
 import 'package:gesplai/screens/chat/chat_list_screen.dart';
-import 'package:gesplai/screens/profile/profile_esplai_screen.dart';
+import 'package:gesplai/screens/profile/profile_general_screen.dart';
 import 'package:gesplai/screens/search/search_screen.dart';
 import 'package:gesplai/globals.dart' as globals;
 
 class BottomNavMenu extends StatefulWidget {
-  final String email;
-  const BottomNavMenu({required this.email});
+  final String userId;
+  const BottomNavMenu({required this.userId});
 
   @override
   State<BottomNavMenu> createState() => _BottomNavMenuState();
@@ -16,14 +16,6 @@ class BottomNavMenu extends StatefulWidget {
 
 class _BottomNavMenuState extends State<BottomNavMenu> {
   int pageIndex = 4;
-
-  final pages = [
-    const CalendarScreen(),
-    const SearchScreen(),
-    const ChatListScreen(),
-    const ActNotListScreen(),
-    const ProfileEsplaiScreen(),
-  ];
 
   @override
   void initState() {
@@ -54,7 +46,14 @@ class _BottomNavMenuState extends State<BottomNavMenu> {
       ),
       body: IndexedStack(
         index: pageIndex,
-        children: pages,
+        children: [
+          //AttendanceScreen2(userId: widget.userId),
+          CalendarScreen(userId: widget.userId),
+          SearchScreen(userId: widget.userId),
+          ChatListScreen(userId: widget.userId),
+          ActNotListScreen(userId: widget.userId),
+          const ProfileGeneralScreen(),
+        ],
       ),
     );
   }

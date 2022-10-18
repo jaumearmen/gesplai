@@ -26,7 +26,7 @@ class EventDetailScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: Text(
                       description,
-                      maxLines: 3,
+                      maxLines: 10,
                       overflow: TextOverflow.fade,
                     ),
                   ),
@@ -41,6 +41,7 @@ class EventDetailScreen extends StatelessWidget {
 
   Widget ImageStack(bool imageExists, BuildContext context) {
     return Stack(
+      alignment: AlignmentDirectional.bottomCenter,
       children: [
         imageExists
             ? Container(
@@ -62,6 +63,8 @@ class EventDetailScreen extends StatelessWidget {
               title,
               style: const TextStyle(
                 fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
           ),
